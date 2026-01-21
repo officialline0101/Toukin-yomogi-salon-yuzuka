@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>予約フォーム</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        /* 基本スタイル */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding-top: 5px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            background-color: #fdfdfd;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 96%;
+            max-width: 500px;
+            padding: 25px;
+            box-sizing: border-box;
+            margin: 0 auto;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            background: linear-gradient(135deg, #45c4b7, #45c4b7);
+            color: white;
+            padding: 20px;
+            border-radius: 0 0px 0px 0px;
+            text-align: center;
+            display: block;
+            margin: -20px -15px 20px -15px;
+            font-size: 26px;
+            font-weight: 100;
+            box-shadow: inset 0 -5px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .small-text {
+            font-size: 16px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* ラベルスタイル */
+        .label, .labelkibounitizi, .labeltyuuou, .labelmessezi {
+            display: block;
+            margin-bottom: 15px;
+            padding: 5px;
+            font-weight: 400;
+            background-color: #45c4b7;
+            color: #ffffff;
+            font-size: 18px;
+            text-align: center;
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+        }
+        
+        .labelkibounitizi { margin: 20px 0 10px 0; }
+
+        /* ▼▼▼ カテゴリーアコーディオン用のスタイル ▼▼▼ */
+        .category-toggle {
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            padding: 15px;
+            text-align: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 15px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .category-toggle:hover {
+            opacity: 0.9;
+        }
+
+        /* アコーディオンが開いている時 */
+        .category-toggle.active-accordion {
+            background-color: #555; 
+        }
+
+        /* 中身が選択されている時のスタイル */
+        .category-toggle.has-selection {
+            background-color: #e0f7fa; /* 薄い水色 */
+            color: #004d40; /* 濃い緑文字 */
+            border: 1px solid #45c4b7;
+            font-weight: bold;
+        }
+
+        /* 「選択中」バッジ */
+        .selection-badge {
+            display: none; /* デフォルトは非表示 */
+            font-size: 0.7em;
+            background-color: #45c4b7;
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        /* 選択されている時だけバッジを表示 */
+        .category-toggle.has-selection .selection-badge {
+            display: inline-block;
+        }
+        /* 選択されている時のアイコン色 */
+        .category-toggle.has-selection i {
+            color: #45c4b7;
+        }
+
+        .category-content {
+            display: none; /* 初期状態は非表示 */
+            padding: 15px 10px;
+            border: 1px solid #ddd;
+            border-top: none;
+            background: #fdfdfd;
+            border-radius: 0 0 5px 5px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .sub-label {
+            color: #45c4b7;
+            border-bottom: 2px solid #45c4b7;
+            margin: 15px 0 10px 0;
+            font-weight: bold;
+            display: inline-block;
+        }
+        /* ▲▲▲ カテゴリーアコーディオン用のスタイル ▲▲▲ */
+
+        /* 必須マーク */
+        .required {
+            color: #ffffff;
+            font-size: 0.6em;
+            margin-left: 8px;
+            background-color: rgb(255, 15, 15);
+            padding: 2px 6px;
+            border-radius: 3px;
+            vertical-align: middle;
+        }
+
+        /* 入力フォーム */
+        input[type="text"], input[type="tel"], textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #555555;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: #45c4b7;
+            outline: none;
+            box-shadow: 0 0 5px rgba(69, 196, 183, 0.5);
+        }
+
+        /* ボタン群 */
+        .visit-buttons, .menu-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .visit-buttons button, .menu-buttons button {
+            flex: 1 1 45%; /* 2列表示 */
+            padding: 12px;
+            border: 1px solid #2e2e2e;
+            border-radius: 4px;
+            background-color: #f7f7f7;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            color: #333;
+        }
+
+        .visit-buttons button.active, .menu-buttons button.active {
+            background-color: #3e3f41;
+            color: #fff;
+            border-color: #000;
+            font-weight: bold;
+            transform: scale(0.98);
+        }
+
+        /* 日時選択エリア */
+        .datetime-wrapper {
+            margin-bottom: 15px;
+        }
+        .dt-grid {
+            display: flex;
+            gap: 10px;
+        }
+        .datetime-input {
+            flex: 1;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #333;
+            border-radius: 4px;
+            background: #fff;
+            color: #333;
+        }
+        .placeholder {
+            display: block;
+            color: #666;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+
+        /* 確認エリア */
+        #displayInfo {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        .info-row {
+            margin-bottom: 10px;
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 10px;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .info-label {
+            color: #45c4b7;
+            font-weight: bold;
+        }
+
+        /* 送信ボタン */
+        .submit-button {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            background-color: #45c4b7;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        .submit-button:hover {
+            opacity: 0.9;
+        }
+
+        /* 修正ボタン */
+        .edit-button {
+            float: right;
+            background: #fff;
+            border: 1px solid #333;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>
+            <span class="small-text">店舗名</span>
+            予約フォーム
+        </h1>
+
+        <div class="label" id="lbl_name">お客様名<span class="required">必須</span></div>
+        <input type="text" id="name" placeholder="お名前を入力してください" oninput="updateDisplayInfo()">
+
+        <div class="label" id="lbl_phone">電話番号<span class="required">必須</span></div>
+        <input type="tel" id="phone" placeholder="電話番号を入力してください" oninput="updateDisplayInfo()">
+
+        <div class="label" id="lbl_visit">ご来店回数<span class="required">必須</span></div>
+        <div class="visit-buttons">
+            <button type="button" onclick="selectVisit(this)">新規</button>
+            <button type="button" onclick="selectVisit(this)">リピーター</button>
+            <button type="button" onclick="selectVisit(this)">メンバー会員</button>
+        </div>
+
+        <div class="label" id="lbl_menu">メニューをお選びください<span class="required">必須</span></div>
+        <div style="text-align: center; font-size: 0.8em; color: #666; margin-bottom: 5px;">
+            ご希望のカテゴリーをタップしてメニューを表示してください<br>（複数選択可能です）
+        </div>
+
+        <button class="category-toggle" onclick="toggleCategory('cat-lymph')">
+            <span>リンパケア <span class="selection-badge">選択中</span></span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div id="cat-lymph" class="category-content">
+            <div class="sub-label">🔹 メニュー項目</div>
+            <div class="menu-buttons">
+                <button type="button" onclick="toggleSelection(this)">極上岩盤リンパケア（130分）</button>
+                <button type="button" onclick="toggleSelection(this)">極上岩盤リンパケア（100分）</button>
+                <button type="button" onclick="toggleSelection(this)">極上岩盤リンパケア（70分）</button>
+                <button type="button" onclick="toggleSelection(this)">全身プレミアムケアコース（160分）</button>
+                <button type="button" onclick="toggleSelection(this)">自由にセレクトコース（120分）</button>
+                <button type="button" onclick="toggleSelection(this)">温活引き締めボディーコース（120分）</button>
+            </div>
+            <div class="sub-label">🔸 オプション項目</div>
+            <div class="menu-buttons">
+                <button type="button" onclick="toggleSelection(this)">よもぎ蒸し（40分）</button>
+                <button type="button" onclick="toggleSelection(this)">ドライヘッドスパ（30分）</button>
+                <button type="button" onclick="toggleSelection(this)">ドライヘッドスパ（20分）</button>
+                <button type="button" onclick="toggleSelection(this)">もみほぐし（60分）</button>
+                <button type="button" onclick="toggleSelection(this)">もみほぐし（30分）</button>
+                <button type="button" onclick="toggleSelection(this)">足ツボ（15分）</button>
+                <button type="button" onclick="toggleSelection(this)">フットリフレ（30分）</button>
+                <button type="button" onclick="toggleSelection(this)">岩盤浴＆ホットストーン（30分）</button>
+            </div>
+        </div>
+
+        <button class="category-toggle" onclick="toggleCategory('cat-head')">
+            <span>ドライヘッドスパ <span class="selection-badge">選択中</span></span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div id="cat-head" class="category-content">
+            <div class="sub-label">🔹 メニュー項目</div>
+            <div class="menu-buttons">
+                <button type="button" onclick="toggleSelection(this)">ドライヘッドスパ（50分）</button>
+                <button type="button" onclick="toggleSelection(this)">ヘッド＆もみほぐしコース（110分）</button>
+                <button type="button" onclick="toggleSelection(this)">自由にセレクトコース（120分）</button>
+            </div>
+            <div class="sub-label">🔸 オプション項目</div>
+            <div class="menu-buttons">
+                <button type="button" onclick="toggleSelection(this)">よもぎ蒸し（40分）</button>
+                <button type="button" onclick="toggleSelection(this)">岩盤浴＆ホットストーン（30分）</button>
+                <button type="button" onclick="toggleSelection(this)">もみほぐし（30分）</button>
+                <button type="button" onclick="toggleSelection(this)">足ツボ（15分）</button>
+                <button type="button" onclick="toggleSelection(this)">フットリフレ（30分）</button>
+            </div>
+        </div>
+
+        <button class="category-toggle" onclick="toggleCategory('cat-yomogi')">
+            <span>よもぎ蒸し <span class="selection-badge">選択中</span></span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div id="cat-yomogi" class="category-content">
+            <div class="sub-label">🔹 メニュー項目</div>
+            <div class="menu-buttons">
+                <button type="button" onclick="toggleSelection(this)">よもぎ蒸し（40分）</button>
+                <button type="button" onclick="toggleSelection(this)">全身プレミアムケアコース（160分）</button>
+                <button type="button" onclick="toggleSelection(this)">温活引き締めボディーコース（120分）</button>
+            </div>
+            <div class="sub-label">🔸 オプション項目</div>
+            <div class="menu-buttons">
+                <button type="button" onclick="toggleSelection(this)">ドライヘッドスパ（30分）</button>
+                <button type="button" onclick="toggleSelection(this)">ドライヘッドスパ（20分）</button>
+                <button type="button" onclick="toggleSelection(this)">もみほぐし（60分）</button>
+                <button type="button" onclick="toggleSelection(this)">もみほぐし（30分）</button>
+                <button type="button" onclick="toggleSelection(this)">足ツボ（15分）</button>
+                <button type="button" onclick="toggleSelection(this)">フットリフレ（30分）</button>
+                <button type="button" onclick="toggleSelection(this)">炭酸足湯＆脚リンパ（50分）</button>
+            </div>
+        </div>
+
+        <button class="category-toggle" onclick="toggleCategory('cat-mens')">
+            <span>メンズメニュー <span class="selection-badge">選択中</span></span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div id="cat-mens" class="category-content">
+            <div class="sub-label">🔹 メニュー項目</div>
+            <div class="menu-buttons">
+                <button type="button" onclick="toggleSelection(this)">メンズコース（120分）</button>
+                <button type="button" onclick="toggleSelection(this)">ヘッド＆もみほぐしコース（110分）</button>
+                <button type="button" onclick="toggleSelection(this)">自由にセレクトコース（120分）</button>
+                <button type="button" onclick="toggleSelection(this)">温活もみほぐしコース</button>
+                <button type="button" onclick="toggleSelection(this)">よもぎ蒸し（40分）</button>
+                <button type="button" onclick="toggleSelection(this)">ドライヘッドスパ（50分）</button>
+                <button type="button" onclick="toggleSelection(this)">炭酸足湯＆脚リンパ（90分）</button>
+            </div>
+            <div class="sub-label">🔸 オプション項目</div>
+            <div class="menu-buttons">
+                <button type="button" onclick="toggleSelection(this)">ドライヘッドスパ（30分）</button>
+                <button type="button" onclick="toggleSelection(this)">ドライヘッドスパ（20分）</button>
+                <button type="button" onclick="toggleSelection(this)">もみほぐし（60分）</button>
+                <button type="button" onclick="toggleSelection(this)">もみほぐし（30分）</button>
+                <button type="button" onclick="toggleSelection(this)">よもぎ蒸し（40分）</button>
+                <button type="button" onclick="toggleSelection(this)">脚リンパ（30分）</button>
+                <button type="button" onclick="toggleSelection(this)">足ツボ（15分）</button>
+            </div>
+        </div>
+
+        <button class="category-toggle" onclick="toggleCategory('cat-pair')">
+            <span>ペアコースメニュー <span class="selection-badge">選択中</span></span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div id="cat-pair" class="category-content">
+            <div class="sub-label">🔹 メニュー項目</div>
+            <div class="menu-buttons">
+                <button type="button" onclick="toggleSelection(this)">よもぎ蒸し（40分）</button>
+                <button type="button" onclick="toggleSelection(this)">ペアコース（100分）</button>
+            </div>
+        </div>
+
+        <div class="labelkibounitizi" id="kibou1">希望日時<span class="required">必須</span></div>
+        <div class="datetime-wrapper">
+            <span class="placeholder">⇩タップして選択⇩</span>
+            <div class="dt-grid">
+                <select id="date1_day" class="datetime-input" onchange="updateDisplayInfo()"></select>
+                <select id="date1_time" class="datetime-input" onchange="updateDisplayInfo()">
+                    <option value="" disabled selected>時間帯</option>
+                    <option value="午前">午前</option>
+                    <option value="午後">午後</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="labelkibounitizi" id="kibou2">第二希望日時<span class="required">必須</span></div>
+        <div class="datetime-wrapper">
+            <span class="placeholder">⇩タップして選択⇩</span>
+            <div class="dt-grid">
+                <select id="date2_day" class="datetime-input" onchange="updateDisplayInfo()"></select>
+                <select id="date2_time" class="datetime-input" onchange="updateDisplayInfo()">
+                    <option value="" disabled selected>時間帯</option>
+                    <option value="午前">午前</option>
+                    <option value="午後">午後</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="labelkibounitizi" id="kibou3">第三希望日時<span class="required">必須</span></div>
+        <div class="datetime-wrapper">
+            <span class="placeholder">⇩タップして選択⇩</span>
+            <div class="dt-grid">
+                <select id="date3_day" class="datetime-input" onchange="updateDisplayInfo()"></select>
+                <select id="date3_time" class="datetime-input" onchange="updateDisplayInfo()">
+                    <option value="" disabled selected>時間帯</option>
+                    <option value="午前">午前</option>
+                    <option value="午後">午後</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="labelmessezi">メッセージ<br><span style="font-size:0.8em">（質問等お気軽にご記入ください）</span></div>
+        <textarea id="message" rows="4" placeholder="メッセージを入力してください" oninput="updateDisplayInfo()"></textarea>
+
+        <div class="labeltyuuou">ご予約内容確認</div>
+        <div id="displayInfo">
+            </div>
+
+        <button class="submit-button" onclick="submitForm()">予約を行う</button>
+    </div>
+
+    <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+    <script>
+        // LIFF初期化
+        document.addEventListener('DOMContentLoaded', function () {
+            liff.init({
+                liffId: '2005254357-zKma9BZk' 
+            }).then(() => {
+                console.log('LIFF OK');
+            }).catch((err) => {
+                console.log('LIFF Error', err);
+            });
+
+            // 日付選択肢の生成
+            buildDateOptions('date1_day');
+            buildDateOptions('date2_day');
+            buildDateOptions('date3_day');
+            
+            // 初回表示更新
+            updateDisplayInfo();
+        });
+
+        // カテゴリーの開閉制御
+        function toggleCategory(id) {
+            const content = document.getElementById(id);
+            const button = document.querySelector(`button[onclick="toggleCategory('${id}')"]`);
+            const icon = button.querySelector('i');
+
+            if (content.style.display === "block") {
+                content.style.display = "none";
+                button.classList.remove("active-accordion");
+                icon.className = "fas fa-chevron-down";
+            } else {
+                content.style.display = "block";
+                button.classList.add("active-accordion");
+                icon.className = "fas fa-chevron-up";
+            }
+        }
+
+        // 日付生成ロジック（日曜日を除外）
+        function buildDateOptions(elementId) {
+            const select = document.getElementById(elementId);
+            select.innerHTML = '<option value="" disabled selected>日付を選択</option>';
+            const today = new Date();
+            const jpWeek = ['日', '月', '火', '水', '木', '金', '土'];
+
+            for (let i = 1; i <= 60; i++) { // 向こう60日分
+                const d = new Date(today);
+                d.setDate(today.getDate() + i);
+                
+                const wd = d.getDay();
+                if (wd === 0) continue; // 日曜定休
+
+                const y = d.getFullYear();
+                const m = ('0' + (d.getMonth() + 1)).slice(-2);
+                const day = ('0' + d.getDate()).slice(-2);
+                const val = `${y}-${m}-${day}`;
+                const txt = `${m}/${day}（${jpWeek[wd]}）`;
+
+                const opt = document.createElement('option');
+                opt.value = val;
+                opt.textContent = txt;
+                select.appendChild(opt);
+            }
+        }
+
+        // 来店回数選択
+        let visitStatus = '';
+        function selectVisit(btn) {
+            const siblings = btn.parentNode.querySelectorAll('button');
+            siblings.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            visitStatus = btn.textContent;
+            updateDisplayInfo();
+        }
+
+        // メニュー・オプションのトグル選択
+        function toggleSelection(btn) {
+            btn.classList.toggle('active');
+            
+            // ▼ ここが追加：カテゴリーボタンの見た目を更新する ▼
+            checkCategorySelection(btn);
+
+            updateDisplayInfo();
+        }
+
+        // カテゴリー内の選択状態をチェックして、親ボタンのスタイルを変える関数
+        function checkCategorySelection(btn) {
+            // 親のカテゴリーコンテナを探す
+            const contentDiv = btn.closest('.category-content');
+            if (!contentDiv) return;
+
+            const categoryId = contentDiv.id; 
+            // そのIDに対応するトグルボタンを探す
+            const toggleBtn = document.querySelector(`button[onclick="toggleCategory('${categoryId}')"]`);
+
+            // コンテナの中に「active」なボタンが1つでもあるかチェック
+            const hasActive = contentDiv.querySelectorAll('.menu-buttons button.active').length > 0;
+
+            if (hasActive) {
+                toggleBtn.classList.add('has-selection');
+            } else {
+                toggleBtn.classList.remove('has-selection');
+            }
+        }
+
+        // スクロール用
+        function scrollToElement(id) {
+            const el = document.getElementById(id);
+            if(el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // 表示内容の更新
+        function updateDisplayInfo() {
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            
+            // 選択されたメニュー・オプションを収集
+            const selectedButtons = document.querySelectorAll('.menu-buttons button.active');
+            let menuList = [];
+            let totalTime = 0;
+
+            selectedButtons.forEach(btn => {
+                const text = btn.textContent;
+                menuList.push(text);
+                
+                const match = text.match(/(\d+)分/);
+                if (match) {
+                    totalTime += parseInt(match[1], 10);
+                }
+            });
+
+            // 時間計算
+            let timeStr = "";
+            if (totalTime > 0) {
+                const h = Math.floor(totalTime / 60);
+                const m = totalTime % 60;
+                timeStr = h > 0 ? `${h}時間${m}分` : `${m}分`;
+            }
+
+            // 日時取得
+            const d1 = getDateStr('date1');
+            const d2 = getDateStr('date2');
+            const d3 = getDateStr('date3');
+
+            // HTML生成
+            let html = '';
+
+            // お名前・電話
+            html += `<div class="info-row"><div class="info-label">【お客様情報】</div>`;
+            html += `お名前：${name || '<span style="color:#aaa">未入力</span>'}<br>`;
+            html += `電話番号：${phone || '<span style="color:#aaa">未入力</span>'}`;
+            html += `<button class="edit-button" onclick="scrollToElement('lbl_name')">修正</button></div>`;
+
+            // 来店回数
+            html += `<div class="info-row"><div class="info-label">【来店回数】</div>`;
+            html += `${visitStatus || '<span style="color:red">未選択</span>'}`;
+            html += `<button class="edit-button" onclick="scrollToElement('lbl_visit')">修正</button></div>`;
+
+            // メニュー
+            html += `<div class="info-row"><div class="info-label">【選択メニュー】</div>`;
+            if (menuList.length > 0) {
+                html += `<ul style="margin:5px 0 5px 20px; padding:0;">`;
+                menuList.forEach(m => html += `<li>${m}</li>`);
+                html += `</ul>`;
+                if(timeStr) {
+                    html += `<strong>目安所要時間：${timeStr}</strong>`;
+                }
+            } else {
+                html += `<span style="color:red">未選択</span>`;
+            }
+            html += `<button class="edit-button" onclick="scrollToElement('lbl_menu')">修正</button></div>`;
+
+            // 希望日時
+            html += `<div class="info-row"><div class="info-label">【希望日時】</div>`;
+            html += `第一：${d1 || '<span style="color:red">未選択</span>'}<br>`;
+            html += `第二：${d2 || '<span style="color:#aaa">未選択</span>'}<br>`;
+            html += `第三：${d3 || '<span style="color:#aaa">未選択</span>'}`;
+            html += `<button class="edit-button" onclick="scrollToElement('kibou1')">修正</button></div>`;
+
+            document.getElementById('displayInfo').innerHTML = html;
+        }
+
+        function getDateStr(baseId) {
+            const day = document.getElementById(baseId + '_day').value;
+            const time = document.getElementById(baseId + '_time').value;
+            if (!day || !time) return '';
+            const dateParts = day.split('-');
+            return `${dateParts[1]}/${dateParts[2]} ${time}`;
+        }
+
+        // 送信処理
+        function submitForm() {
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const menuBtns = document.querySelectorAll('.menu-buttons button.active');
+            const d1_day = document.getElementById('date1_day').value;
+            const d1_time = document.getElementById('date1_time').value;
+            const message = document.getElementById('message').value;
+
+            // バリデーション
+            if (!name) { alert('お名前を入力してください'); return; }
+            if (!phone) { alert('電話番号を入力してください'); return; }
+            if (!visitStatus) { alert('来店回数を選択してください'); return; }
+            if (menuBtns.length === 0) { alert('メニューを1つ以上選択してください'); return; }
+            if (!d1_day || !d1_time) { alert('第一希望日時は必須です'); return; }
+
+            // メニューリスト作成
+            let menuText = "";
+            menuBtns.forEach(btn => {
+                menuText += `・${btn.textContent}\n`;
+            });
+
+            // 日時テキスト作成
+            const d1 = d1_day ? `${d1_day} ${d1_time}` : "指定なし";
+            const d2 = document.getElementById('date2_day').value ? `${document.getElementById('date2_day').value} ${document.getElementById('date2_time').value}` : "なし";
+            const d3 = document.getElementById('date3_day').value ? `${document.getElementById('date3_day').value} ${document.getElementById('date3_time').value}` : "なし";
+
+            // 送信テキスト
+            const sendText = `【予約フォーム】\n\n`
+                + `[お名前]\n${name}\n\n`
+                + `[電話番号]\n${phone}\n\n`
+                + `[来店回数]\n${visitStatus}\n\n`
+                + `[希望メニュー]\n${menuText}\n`
+                + `[希望日時]\n第一：${d1}\n第二：${d2}\n第三：${d3}\n\n`
+                + `[メッセージ]\n${message}`;
+
+            // LINE送信
+            if (!liff.isInClient()) {
+                alert('LINEアプリ内で開いてください。\n\n送信内容プレビュー:\n' + sendText);
+            } else {
+                liff.sendMessages([{
+                    type: 'text',
+                    text: sendText
+                }]).then(() => {
+                    liff.closeWindow();
+                }).catch((err) => {
+                    alert('送信に失敗しました。\n' + err);
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>
