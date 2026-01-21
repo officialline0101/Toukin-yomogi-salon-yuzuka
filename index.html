@@ -14,10 +14,10 @@
            カラー・変数定義
            ========================================= */
         :root {
-            --primary-green: #6e8276;   /* 画像のベースとなるアースグリーン */
-            --accent-yellow: #f0e28a;   /* 画像のアクセント黄色 */
-            --bg-color: #f6f5f1;        /* 背景の生成り色 */
-            --text-main: #4a4a4a;       /* 濃いグレー */
+            --primary-green: #6e8276;
+            --accent-yellow: #f0e28a;
+            --bg-color: #f6f5f1;
+            --text-main: #4a4a4a;
             --text-white: #ffffff;
             --input-bg: #ffffff;
             --shadow-soft: 0 4px 20px rgba(110, 130, 118, 0.15);
@@ -159,7 +159,7 @@
             background-color: #fff;
             color: var(--text-main);
             cursor: pointer;
-            font-size: 15px; /* 文字サイズを少しアップ */
+            font-size: 15px;
             transition: all 0.2s ease;
             font-weight: 500;
             box-shadow: 0 2px 4px rgba(0,0,0,0.03);
@@ -179,36 +179,33 @@
             transform: translateY(-1px);
         }
 
-        /* ▼▼▼ レイアウト修正箇所 ▼▼▼ */
-        
-        /* 来店回数は横並び (flex-wrap使用) */
+        /* 来店回数は横並び */
         .visit-buttons {
             flex-wrap: wrap;
         }
         .visit-buttons button {
-            flex: 1 1 30%; /* PC: 3列 */
+            flex: 1 1 30%;
         }
         @media (max-width: 480px) {
             .visit-buttons button {
-                flex: 1 1 45%; /* スマホ: 2列 */
+                flex: 1 1 45%;
             }
         }
 
-        /* メニューボタンは縦一列 (flex-direction: column) */
+        /* メニューボタンは縦一列 */
         .menu-buttons {
-            flex-direction: column; /* 縦並び指定 */
-            gap: 10px; /* ボタン間の余白 */
+            flex-direction: column; 
+            gap: 10px; 
         }
         .menu-buttons button {
-            width: 100%; /* 横幅いっぱい */
-            text-align: left; /* 左寄せにして読みやすく */
-            padding-left: 20px; /* 左側に余白を持たせる */
+            width: 100%; 
+            text-align: left; 
+            padding-left: 20px; 
             position: relative;
         }
         
-        /* 縦並びのメニューボタンに矢印アイコンのようなアクセントを追加 */
         .menu-buttons button::after {
-            content: '\f105'; /* FontAwesome angle-right */
+            content: '\f105';
             font-family: "Font Awesome 5 Free";
             font-weight: 900;
             position: absolute;
@@ -219,11 +216,8 @@
             transition: color 0.2s;
         }
         .menu-buttons button.active::after {
-            color: #fff; /* 選択時は白く */
+            color: #fff; 
         }
-        
-        /* ▲▲▲ レイアウト修正箇所 ▲▲▲ */
-
 
         /* =========================================
            アコーディオン（メニューカテゴリー）
@@ -458,6 +452,18 @@
             margin-left: 10px;
         }
 
+        /* ボタン無効化時のスタイル */
+        .submit-button:disabled {
+            background-color: #ccc;
+            color: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .submit-button:disabled::after {
+            display: none; /* アイコンを消す */
+        }
+
     </style>
 </head>
 
@@ -470,10 +476,10 @@
         </h1>
 
         <div class="label" id="lbl_name">お客様名<span class="required">必須</span></div>
-        <input type="text" id="name" placeholder="例：柚香 花子" oninput="updateDisplayInfo()">
+        <input type="text" id="name" placeholder="例：柚香 花子" oninput="saveInput('name'); updateDisplayInfo()">
 
         <div class="label" id="lbl_phone">電話番号<span class="required">必須</span></div>
-        <input type="tel" id="phone" placeholder="例：090-1234-5678" oninput="updateDisplayInfo()">
+        <input type="tel" id="phone" placeholder="例：090-1234-5678" oninput="saveInput('phone'); updateDisplayInfo()">
 
         <div class="label" id="lbl_visit">ご来店回数<span class="required">必須</span></div>
         <div class="visit-buttons">
@@ -643,7 +649,7 @@
         <div id="displayInfo">
         </div>
 
-        <button class="submit-button" onclick="submitForm()">予約を行う</button>
+        <button id="btn-submit" class="submit-button" onclick="submitForm()">予約を行う</button>
     </div>
 
     <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
@@ -663,9 +669,34 @@
             buildDateOptions('date2_day');
             buildDateOptions('date3_day');
             
+            // ローカルストレージから復元
+            const savedName = localStorage.getItem('name');
+            const savedPhone = localStorage.getItem('phone');
+            const savedVisit = localStorage.getItem('visitStatus');
+
+            if (savedName) document.getElementById('name').value = savedName;
+            if (savedPhone) document.getElementById('phone').value = savedPhone;
+
+            // 来店回数の復元ロジック
+            if (savedVisit) {
+                visitStatus = savedVisit; 
+                const visitBtns = document.querySelectorAll('.visit-buttons button');
+                visitBtns.forEach(btn => {
+                    if (btn.textContent === savedVisit) {
+                        btn.classList.add('active');
+                    }
+                });
+            }
+
             // 初回表示更新
             updateDisplayInfo();
         });
+
+        // 入力内容をローカルストレージに保存
+        function saveInput(id) {
+            const value = document.getElementById(id).value;
+            localStorage.setItem(id, value);
+        }
 
         // カテゴリーの開閉制御
         function toggleCategory(id) {
@@ -717,17 +748,19 @@
             const siblings = btn.parentNode.querySelectorAll('button');
             siblings.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+            
             visitStatus = btn.textContent;
+            
+            // ローカルストレージに保存
+            localStorage.setItem('visitStatus', visitStatus);
+
             updateDisplayInfo();
         }
 
         // メニュー・オプションのトグル選択
         function toggleSelection(btn) {
             btn.classList.toggle('active');
-            
-            // カテゴリーボタンの見た目を更新する
             checkCategorySelection(btn);
-
             updateDisplayInfo();
         }
 
@@ -738,7 +771,6 @@
 
             const categoryId = contentDiv.id; 
             const toggleBtn = document.querySelector(`button[onclick="toggleCategory('${categoryId}')"]`);
-
             const hasActive = contentDiv.querySelectorAll('.menu-buttons button.active').length > 0;
 
             if (hasActive) {
@@ -829,8 +861,13 @@
             return `${dateParts[1]}/${dateParts[2]} ${time}`;
         }
 
-        // 送信処理
+        // 送信処理（連打防止機能付き）
         function submitForm() {
+            const submitBtn = document.getElementById('btn-submit');
+
+            // 1. バリデーション前にボタンが既に押されているかチェック（念のため）
+            if (submitBtn.disabled) return;
+
             const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
             const menuBtns = document.querySelectorAll('.menu-buttons button.active');
@@ -838,12 +875,18 @@
             const d1_time = document.getElementById('date1_time').value;
             const message = document.getElementById('message').value;
 
+            // バリデーション
             if (!name) { alert('お名前を入力してください'); return; }
             if (!phone) { alert('電話番号を入力してください'); return; }
             if (!visitStatus) { alert('来店回数を選択してください'); return; }
             if (menuBtns.length === 0) { alert('メニューを1つ以上選択してください'); return; }
             if (!d1_day || !d1_time) { alert('第一希望日時は必須です'); return; }
 
+            // 2. バリデーション通過後、ボタンを無効化してテキスト変更
+            submitBtn.disabled = true;
+            submitBtn.textContent = '送信中...';
+
+            // データ作成
             let menuText = "";
             menuBtns.forEach(btn => {
                 menuText += `・${btn.textContent}\n`;
@@ -863,6 +906,9 @@
 
             if (!liff.isInClient()) {
                 alert('LINEアプリ内で開いてください。\n\n送信内容プレビュー:\n' + sendText);
+                // テスト用：PCなどLINE外ならボタンを戻す
+                submitBtn.disabled = false;
+                submitBtn.textContent = '予約を行う';
             } else {
                 liff.sendMessages([{
                     type: 'text',
@@ -871,6 +917,9 @@
                     liff.closeWindow();
                 }).catch((err) => {
                     alert('送信に失敗しました。\n' + err);
+                    // エラーが出た場合は再送信できるようにボタンを復活させる
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '予約を行う';
                 });
             }
         }
