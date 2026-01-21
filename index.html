@@ -39,10 +39,10 @@
             line-height: 1.6;
         }
 
-        /* ▼▼▼ スマホでの余白調整（画面一杯にする） ▼▼▼ */
+        /* スマホでの余白調整 */
         @media (max-width: 480px) {
             body {
-                padding: 10px 4px; /* 画面端の余白を極小に */
+                padding: 10px 4px;
             }
         }
 
@@ -59,11 +59,11 @@
             border: 1px solid #fff;
         }
 
-        /* ▼▼▼ スマホでのコンテナ内余白調整 ▼▼▼ */
+        /* スマホでのコンテナ内余白調整 */
         @media (max-width: 480px) {
             .container {
-                padding: 30px 15px; /* 内側の余白も詰めて入力欄を広く確保 */
-                border-radius: 10px; /* 角丸を少し控えめに */
+                padding: 30px 15px;
+                border-radius: 10px;
             }
         }
 
@@ -126,7 +126,7 @@
         }
         @media (max-width: 480px) {
             .label, .labelkibounitizi, .labeltyuuou, .labelmessezi {
-                font-size: 16px; /* スマホで少し文字サイズ調整 */
+                font-size: 16px;
                 margin-top: 20px;
             }
         }
@@ -211,7 +211,7 @@
             flex: 1 1 30%;
         }
         @media (max-width: 480px) {
-            .visit-buttons { gap: 8px; } /* 隙間を少し詰める */
+            .visit-buttons { gap: 8px; }
             .visit-buttons button {
                 flex: 1 1 45%;
                 font-size: 14px;
@@ -379,8 +379,8 @@
             gap: 15px;
         }
         @media (max-width: 480px) {
-            .dt-grid { gap: 10px; } /* スマホは少し狭める */
-            .datetime-input { padding: 12px 5px; } /* パディング調整 */
+            .dt-grid { gap: 10px; }
+            .datetime-input { padding: 12px 5px; }
         }
 
         .placeholder {
@@ -540,7 +540,10 @@
                 <button type="button" onclick="toggleSelection(this)">極上岩盤リンパケア（70分）</button>
                 <button type="button" onclick="toggleSelection(this)">全身プレミアムケアコース（160分）</button>
                 <button type="button" onclick="toggleSelection(this)">自由にセレクトコース（120分）</button>
-                <button type="button" onclick="toggleSelection(this)">温活引き締めボディーコース（120分）</button>
+                
+                <button type="button" onclick="toggleSelection(this)">温活岩盤引き締めボディーコース（120分）</button>
+                <button type="button" onclick="toggleSelection(this)">温活よもぎ引き締めボディーコース（130分）</button>
+                <button type="button" onclick="toggleSelection(this)">炭酸足湯＆ほぐしコース（140分）</button>
             </div>
             <div class="sub-label">🔸 オプション項目</div>
             <div class="menu-buttons">
@@ -585,7 +588,9 @@
             <div class="menu-buttons">
                 <button type="button" onclick="toggleSelection(this)">よもぎ蒸し（40分）</button>
                 <button type="button" onclick="toggleSelection(this)">全身プレミアムケアコース（160分）</button>
-                <button type="button" onclick="toggleSelection(this)">温活引き締めボディーコース（120分）</button>
+                
+                <button type="button" onclick="toggleSelection(this)">温活よもぎ引き締めボディーコース（130分）</button>
+                <button type="button" onclick="toggleSelection(this)">温活もみほぐしコース（100分）</button>
             </div>
             <div class="sub-label">🔸 オプション項目</div>
             <div class="menu-buttons">
@@ -606,13 +611,14 @@
         <div id="cat-mens" class="category-content">
             <div class="sub-label">🔹 メニュー項目</div>
             <div class="menu-buttons">
-                <button type="button" onclick="toggleSelection(this)">メンズコース（120分）</button>
+                <button type="button" onclick="toggleSelection(this)">足湯＆ほぐしコース（140分）</button>
                 <button type="button" onclick="toggleSelection(this)">ヘッド＆もみほぐしコース（110分）</button>
                 <button type="button" onclick="toggleSelection(this)">自由にセレクトコース（120分）</button>
-                <button type="button" onclick="toggleSelection(this)">温活もみほぐしコース</button>
+                <button type="button" onclick="toggleSelection(this)">温活もみほぐしコース（100分）</button>
                 <button type="button" onclick="toggleSelection(this)">よもぎ蒸し（40分）</button>
                 <button type="button" onclick="toggleSelection(this)">ドライヘッドスパ（50分）</button>
-                <button type="button" onclick="toggleSelection(this)">炭酸足湯＆脚リンパ（90分）</button>
+                <button type="button" onclick="toggleSelection(this)">炭酸足湯＆脚リンパ（50分）</button>
+                <button type="button" onclick="toggleSelection(this)">炭酸足湯＆ほぐしコース（140分）</button>
             </div>
             <div class="sub-label">🔸 オプション項目</div>
             <div class="menu-buttons">
@@ -692,7 +698,7 @@
         // LIFF初期化
         document.addEventListener('DOMContentLoaded', function () {
             liff.init({
-                liffId: '2005254357-zKma9BZk' 
+                liffId: '2008936264-UjxuOpzF' 
             }).then(() => {
                 console.log('LIFF OK');
             }).catch((err) => {
