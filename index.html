@@ -562,6 +562,19 @@
             予約フォーム
         </h1>
 
+        <div style="margin-bottom: 35px;">
+            <p
+                style="background-color: #fff8f8; color: #d97d7d; border: 1px solid #fecaca; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px; line-height: 1.8; text-align: center;">
+                ◎ご予約は前日16:00まで<br>
+                ※土曜日は５日前までにお願いいたします。
+            </p>
+
+            <button type="button" onclick="sendMenuDetail()"
+                style="width: 100%; padding: 16px; background-color: #fff; border: 2px solid var(--primary-green); color: var(--primary-green); border-radius: 50px; font-weight: bold; font-size: 16px; margin-top: 20px; cursor: pointer; font-family: 'Shippori Mincho', serif; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                <i class="far fa-file-alt"></i> メニュー詳細一覧
+            </button>
+        </div>
+
         <div class="label" id="lbl_name">お客様名<span class="required">必須</span></div>
         <input type="text" id="name" placeholder="例：柚香 花子" oninput="saveInput('name'); updateDisplayInfo()">
 
@@ -745,6 +758,8 @@
         </div>
 
         <button id="btn-submit" class="submit-button" onclick="submitForm()">予約を行う</button>
+
+
     </div>
 
     <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
@@ -1013,6 +1028,22 @@
                     submitBtn.textContent = '予約を行う';
                 });
             }
+        }
+
+        // メニュー詳細一覧テキスト送信
+        function sendMenuDetail() {
+            if (!liff.isInClient()) {
+                window.alert('このボタンはLINEアプリ内でのみ動作します。\n（トーク画面に「メニュー詳細一覧」と送信されます）');
+                return;
+            }
+            liff.sendMessages([{
+                type: 'text',
+                text: 'メニュー詳細一覧'
+            }]).then(() => {
+                liff.closeWindow();
+            }).catch((err) => {
+                window.alert('送信に失敗しました。\n' + err);
+            });
         }
     </script>
 </body>
