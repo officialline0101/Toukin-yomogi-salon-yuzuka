@@ -7,7 +7,9 @@
     <title>予約フォーム</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600&family=Zen+Maru+Gothic:wght@400;500;700&display=swap"
+        rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <style>
         /* =========================================
@@ -35,7 +37,8 @@
             justify-content: center;
             min-height: 100vh;
             margin: 0;
-            padding: 20px 10px; /* PCでの余白 */
+            padding: 20px 10px;
+            /* PCでの余白 */
             line-height: 1.6;
         }
 
@@ -52,7 +55,8 @@
             box-shadow: var(--shadow-soft);
             width: 100%;
             max-width: 600px;
-            padding: 40px 30px; /* PCでの内側余白 */
+            padding: 40px 30px;
+            /* PCでの内側余白 */
             box-sizing: border-box;
             margin: 0 auto;
             position: relative;
@@ -81,8 +85,12 @@
             padding-bottom: 15px;
             letter-spacing: 0.1em;
         }
+
         @media (max-width: 480px) {
-            h1 { font-size: 24px; margin-bottom: 30px; }
+            h1 {
+                font-size: 24px;
+                margin-bottom: 30px;
+            }
         }
 
         h1::after {
@@ -111,7 +119,10 @@
         /* =========================================
            ラベル & フォーム要素
            ========================================= */
-        .label, .labelkibounitizi, .labeltyuuou, .labelmessezi {
+        .label,
+        .labelkibounitizi,
+        .labeltyuuou,
+        .labelmessezi {
             font-family: 'Shippori Mincho', serif;
             font-size: 18px;
             color: var(--primary-green);
@@ -124,8 +135,13 @@
             text-align: left;
             font-weight: 600;
         }
+
         @media (max-width: 480px) {
-            .label, .labelkibounitizi, .labeltyuuou, .labelmessezi {
+
+            .label,
+            .labelkibounitizi,
+            .labeltyuuou,
+            .labelmessezi {
                 font-size: 16px;
                 margin-top: 20px;
             }
@@ -143,7 +159,10 @@
             letter-spacing: 0;
         }
 
-        input[type="text"], input[type="tel"], textarea, select {
+        input[type="text"],
+        input[type="tel"],
+        textarea,
+        select {
             width: 100%;
             padding: 14px;
             margin-bottom: 20px;
@@ -156,27 +175,32 @@
             font-family: inherit;
         }
 
-        input:focus, textarea:focus, select:focus {
+        input:focus,
+        textarea:focus,
+        select:focus {
             background-color: #fff;
             border-color: var(--primary-green);
             box-shadow: 0 0 0 3px rgba(110, 130, 118, 0.2);
             outline: none;
         }
 
-        input::placeholder, textarea::placeholder {
+        input::placeholder,
+        textarea::placeholder {
             color: #ccc;
         }
 
         /* =========================================
            ボタンスタイル（来店回数・メニュー共通）
            ========================================= */
-        .visit-buttons, .menu-buttons {
+        .visit-buttons,
+        .menu-buttons {
             display: flex;
             gap: 12px;
             margin-bottom: 25px;
         }
 
-        .visit-buttons button, .menu-buttons button {
+        .visit-buttons button,
+        .menu-buttons button {
             padding: 12px 15px;
             border: 1px solid #ddd;
             border-radius: 30px;
@@ -186,16 +210,18 @@
             font-size: 15px;
             transition: all 0.2s ease;
             font-weight: 500;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
             font-family: 'Zen Maru Gothic', sans-serif;
         }
 
-        .visit-buttons button:hover, .menu-buttons button:hover {
+        .visit-buttons button:hover,
+        .menu-buttons button:hover {
             border-color: var(--primary-green);
             color: var(--primary-green);
         }
 
-        .visit-buttons button.active, .menu-buttons button.active {
+        .visit-buttons button.active,
+        .menu-buttons button.active {
             background-color: var(--primary-green);
             color: #fff;
             border-color: var(--primary-green);
@@ -207,11 +233,16 @@
         .visit-buttons {
             flex-wrap: wrap;
         }
+
         .visit-buttons button {
             flex: 1 1 30%;
         }
+
         @media (max-width: 480px) {
-            .visit-buttons { gap: 8px; }
+            .visit-buttons {
+                gap: 8px;
+            }
+
             .visit-buttons button {
                 flex: 1 1 45%;
                 font-size: 14px;
@@ -221,16 +252,17 @@
 
         /* メニューボタンは縦一列 */
         .menu-buttons {
-            flex-direction: column; 
-            gap: 10px; 
+            flex-direction: column;
+            gap: 10px;
         }
+
         .menu-buttons button {
-            width: 100%; 
-            text-align: left; 
-            padding-left: 20px; 
+            width: 100%;
+            text-align: left;
+            padding-left: 20px;
             position: relative;
         }
-        
+
         .menu-buttons button::after {
             content: '\f105';
             font-family: "Font Awesome 5 Free";
@@ -242,8 +274,9 @@
             color: #ddd;
             transition: color 0.2s;
         }
+
         .menu-buttons button.active::after {
-            color: #fff; 
+            color: #fff;
         }
 
         /* =========================================
@@ -269,7 +302,7 @@
             transition: all 0.3s;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .category-toggle::before {
@@ -295,12 +328,12 @@
             font-size: 60px;
             color: rgba(255, 255, 255, 0.15);
         }
-        
+
         .category-toggle span {
             position: relative;
             z-index: 2;
         }
-        
+
         .category-toggle i {
             margin-left: 15px;
             font-size: 0.8em;
@@ -318,13 +351,14 @@
             color: var(--primary-green);
             border: 2px solid var(--primary-green);
         }
+
         .category-toggle.has-selection::before,
         .category-toggle.has-selection::after {
             color: rgba(110, 130, 118, 0.1);
         }
-        
+
         .category-toggle.has-selection i {
-             color: var(--primary-green);
+            color: var(--primary-green);
         }
 
         .selection-badge {
@@ -339,6 +373,7 @@
             font-weight: bold;
             font-family: sans-serif;
         }
+
         .category-toggle.has-selection .selection-badge {
             display: inline-block;
         }
@@ -374,13 +409,20 @@
             border-radius: 8px;
             border: 1px dashed #ddd;
         }
+
         .dt-grid {
             display: flex;
             gap: 15px;
         }
+
         @media (max-width: 480px) {
-            .dt-grid { gap: 10px; }
-            .datetime-input { padding: 12px 5px; }
+            .dt-grid {
+                gap: 10px;
+            }
+
+            .datetime-input {
+                padding: 12px 5px;
+            }
         }
 
         .placeholder {
@@ -400,14 +442,18 @@
             padding: 25px;
             border-radius: 8px;
             border: 1px solid #eee;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             font-size: 15px;
             line-height: 1.8;
             margin-top: 20px;
             position: relative;
         }
+
         @media (max-width: 480px) {
-            #displayInfo { padding: 15px; font-size: 14px; }
+            #displayInfo {
+                padding: 15px;
+                font-size: 14px;
+            }
         }
 
         #displayInfo::before {
@@ -426,11 +472,13 @@
             border-bottom: 1px solid #eee;
             padding-bottom: 15px;
         }
+
         .info-row:last-child {
             border-bottom: none;
             margin-bottom: 0;
             padding-bottom: 0;
         }
+
         .info-label {
             color: var(--primary-green);
             font-weight: bold;
@@ -438,6 +486,7 @@
             margin-bottom: 5px;
             display: block;
         }
+
         .info-row strong {
             color: #d97d7d;
         }
@@ -453,6 +502,7 @@
             cursor: pointer;
             transition: all 0.2s;
         }
+
         .edit-button:hover {
             background: #eee;
             color: #333;
@@ -476,11 +526,13 @@
             font-family: 'Shippori Mincho', serif;
             letter-spacing: 0.1em;
         }
+
         .submit-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(110, 130, 118, 0.5);
             background-color: #5d7065;
         }
+
         .submit-button::after {
             content: '\f1d8';
             font-family: "Font Awesome 5 Free";
@@ -495,10 +547,10 @@
             transform: none;
             box-shadow: none;
         }
+
         .submit-button:disabled::after {
             display: none;
         }
-
     </style>
 </head>
 
@@ -540,7 +592,7 @@
                 <button type="button" onclick="toggleSelection(this)">極上岩盤リンパケア（70分）</button>
                 <button type="button" onclick="toggleSelection(this)">全身プレミアムケアコース（160分）</button>
                 <button type="button" onclick="toggleSelection(this)">自由にセレクトコース（120分）</button>
-                
+
                 <button type="button" onclick="toggleSelection(this)">温活岩盤引き締めボディーコース（120分）</button>
                 <button type="button" onclick="toggleSelection(this)">温活よもぎ引き締めボディーコース（130分）</button>
                 <button type="button" onclick="toggleSelection(this)">炭酸足湯＆全身ほぐしコース（140分）</button>
@@ -589,7 +641,7 @@
             <div class="menu-buttons">
                 <button type="button" onclick="toggleSelection(this)">よもぎ蒸し（40分）</button>
                 <button type="button" onclick="toggleSelection(this)">全身プレミアムケアコース（160分）</button>
-                
+
                 <button type="button" onclick="toggleSelection(this)">温活よもぎ引き締めボディーコース（130分）</button>
                 <button type="button" onclick="toggleSelection(this)">温活もみほぐしコース（100分）</button>
             </div>
@@ -657,7 +709,7 @@
             </div>
         </div>
 
-        <div class="labelkibounitizi" id="kibou2">第二希望日時<span class="required">必須</span></div>
+        <div class="labelkibounitizi" id="kibou2">第二希望日時</div>
         <div class="datetime-wrapper">
             <span class="placeholder"><i class="far fa-calendar-alt"></i> タップして日時を選択</span>
             <div class="dt-grid">
@@ -670,7 +722,7 @@
             </div>
         </div>
 
-        <div class="labelkibounitizi" id="kibou3">第三希望日時<span class="required">必須</span></div>
+        <div class="labelkibounitizi" id="kibou3">第三希望日時</div>
         <div class="datetime-wrapper">
             <span class="placeholder"><i class="far fa-calendar-alt"></i> タップして日時を選択</span>
             <div class="dt-grid">
@@ -683,8 +735,10 @@
             </div>
         </div>
 
-        <div class="labelmessezi">メッセージ<br><span style="font-size:0.8em; font-weight:normal;">（質問等お気軽にご記入ください）</span></div>
-        <textarea id="message" rows="4" placeholder="ご予約の希望時間、終了希望時間、お子様連れ、等がある場合お知らせください。" oninput="updateDisplayInfo()"></textarea>
+        <div class="labelmessezi">メッセージ<br><span style="font-size:0.8em; font-weight:normal;">（質問等お気軽にご記入ください）</span>
+        </div>
+        <textarea id="message" rows="4" placeholder="ご予約の希望時間、終了希望時間、お子様連れ、等がある場合お知らせください。"
+            oninput="updateDisplayInfo()"></textarea>
 
         <div class="labeltyuuou">ご予約内容確認</div>
         <div id="displayInfo">
@@ -698,7 +752,7 @@
         // LIFF初期化
         document.addEventListener('DOMContentLoaded', function () {
             liff.init({
-                liffId: '2008936264-UjxuOpzF' 
+                liffId: '2008936264-UjxuOpzF'
             }).then(() => {
                 console.log('LIFF OK');
             }).catch((err) => {
@@ -709,7 +763,7 @@
             buildDateOptions('date1_day');
             buildDateOptions('date2_day');
             buildDateOptions('date3_day');
-            
+
             // ローカルストレージから復元
             const savedName = localStorage.getItem('name');
             const savedPhone = localStorage.getItem('phone');
@@ -720,7 +774,7 @@
 
             // 来店回数の復元ロジック
             if (savedVisit) {
-                visitStatus = savedVisit; 
+                visitStatus = savedVisit;
                 const visitBtns = document.querySelectorAll('.visit-buttons button');
                 visitBtns.forEach(btn => {
                     if (btn.textContent === savedVisit) {
@@ -766,7 +820,7 @@
             for (let i = 1; i <= 60; i++) { // 向こう60日分
                 const d = new Date(today);
                 d.setDate(today.getDate() + i);
-                
+
                 const wd = d.getDay();
                 if (wd === 0) continue; // 日曜定休
 
@@ -789,9 +843,9 @@
             const siblings = btn.parentNode.querySelectorAll('button');
             siblings.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            
+
             visitStatus = btn.textContent;
-            
+
             // ローカルストレージに保存
             localStorage.setItem('visitStatus', visitStatus);
 
@@ -810,7 +864,7 @@
             const contentDiv = btn.closest('.category-content');
             if (!contentDiv) return;
 
-            const categoryId = contentDiv.id; 
+            const categoryId = contentDiv.id;
             const toggleBtn = document.querySelector(`button[onclick="toggleCategory('${categoryId}')"]`);
             const hasActive = contentDiv.querySelectorAll('.menu-buttons button.active').length > 0;
 
@@ -824,14 +878,14 @@
         // スクロール用
         function scrollToElement(id) {
             const el = document.getElementById(id);
-            if(el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
         // 表示内容の更新
         function updateDisplayInfo() {
             const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
-            
+
             const selectedButtons = document.querySelectorAll('.menu-buttons button.active');
             let menuList = [];
             let totalTime = 0;
@@ -839,7 +893,7 @@
             selectedButtons.forEach(btn => {
                 const text = btn.textContent;
                 menuList.push(text);
-                
+
                 const match = text.match(/(\d+)分/);
                 if (match) {
                     totalTime += parseInt(match[1], 10);
@@ -876,7 +930,7 @@
                 html += `<ul style="margin:5px 0 5px 20px; padding:0; color:#555;">`;
                 menuList.forEach(m => html += `<li>${m}</li>`);
                 html += `</ul>`;
-                if(timeStr) {
+                if (timeStr) {
                     html += `<strong>目安所要時間：${timeStr}</strong>`;
                 }
             } else {
