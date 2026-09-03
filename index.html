@@ -598,6 +598,17 @@
             ご希望のカテゴリーをタップしてメニューを表示してください<br>（複数選択可能です）
         </div>
 
+        <button class="category-toggle" onclick="toggleCategory('cat-campaign')">
+            <span>キャンペーンメニュー <span class="selection-badge">選択中</span></span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div id="cat-campaign" class="category-content">
+            <div class="sub-label">🔹 メニュー項目</div>
+            <div class="menu-buttons">
+                <button type="button" onclick="toggleSelection(this)">フェイシャル</button>
+            </div>
+        </div>
+
         <button class="category-toggle" onclick="toggleCategory('cat-lymph')">
             <span>リンパケア <span class="selection-badge">選択中</span></span>
             <i class="fas fa-chevron-down"></i>
