@@ -280,6 +280,64 @@
         }
 
         /* =========================================
+           オーダーメイド施術のチェック欄
+           ========================================= */
+        .custom-care-box {
+            margin-top: 20px;
+            padding: 18px 20px;
+            border: 2px dashed var(--primary-green);
+            border-radius: 8px;
+            background: #fff;
+        }
+
+        .custom-care-box .custom-care-title {
+            color: var(--primary-green);
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .custom-care-box .custom-care-note {
+            font-size: 0.85em;
+            color: #888;
+            margin-bottom: 12px;
+        }
+
+        .check-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .check-buttons label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px 12px 18px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+        }
+
+        .check-buttons input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin: 0;
+            accent-color: var(--primary-green);
+            flex-shrink: 0;
+        }
+
+        .check-buttons label.checked {
+            border-color: var(--primary-green);
+            background: rgba(110, 130, 118, 0.08);
+            color: var(--primary-green);
+        }
+
+        /* =========================================
            アコーディオン（メニューカテゴリー）
            ========================================= */
         .category-toggle {
@@ -616,6 +674,7 @@
         <div id="cat-lymph" class="category-content">
             <div class="sub-label">🔹 メニュー項目</div>
             <div class="menu-buttons">
+                <button type="button" onclick="toggleSelection(this)" data-time="130">極上岩盤浴リンパケア70分（準備を含めた所要時間130分）</button>
                 <button type="button" onclick="toggleSelection(this)">極上岩盤リンパケア（130分）</button>
                 <button type="button" onclick="toggleSelection(this)">極上岩盤リンパケア（100分）</button>
                 <button type="button" onclick="toggleSelection(this)">極上岩盤リンパケア（70分）</button>
@@ -722,6 +781,16 @@
             <div class="menu-buttons">
                 <button type="button" onclick="toggleSelection(this)">よもぎ蒸し（40分）</button>
                 <button type="button" onclick="toggleSelection(this)">ペアコース（100分）</button>
+            </div>
+        </div>
+
+        <div class="custom-care-box" id="custom-care">
+            <div class="custom-care-title">オーダーメイド施術をご希望のお客様</div>
+            <div class="custom-care-note">ご希望の施術にチェックを入れてください（複数選択可）<br>※ベッドの準備が変わるため、事前にお知らせいただけると助かります</div>
+            <div class="check-buttons">
+                <label><input type="checkbox" name="customCare" value="リンパケア" onchange="toggleCheck(this)">リンパケア</label>
+                <label><input type="checkbox" name="customCare" value="ドライヘッドスパ" onchange="toggleCheck(this)">ドライヘッドスパ</label>
+                <label><input type="checkbox" name="customCare" value="もみほぐし" onchange="toggleCheck(this)">もみほぐし</label>
             </div>
         </div>
 
@@ -890,6 +959,17 @@
             updateDisplayInfo();
         }
 
+        // オーダーメイド施術チェックのトグル
+        function toggleCheck(cb) {
+            cb.closest('label').classList.toggle('checked', cb.checked);
+            updateDisplayInfo();
+        }
+
+        // チェックされたオーダーメイド施術の一覧を取得
+        function getCustomCareList() {
+            return Array.from(document.querySelectorAll('input[name="customCare"]:checked')).map(cb => cb.value);
+        }
+
         // カテゴリー内の選択状態をチェックして、親ボタンのスタイルを変える関数
         function checkCategorySelection(btn) {
             const contentDiv = btn.closest('.category-content');
@@ -925,9 +1005,13 @@
                 const text = btn.textContent;
                 menuList.push(text);
 
-                const match = text.match(/(\d+)分/);
-                if (match) {
-                    totalTime += parseInt(match[1], 10);
+                if (btn.dataset.time) {
+                    totalTime += parseInt(btn.dataset.time, 10);
+                } else {
+                    const match = text.match(/(\d+)分/);
+                    if (match) {
+                        totalTime += parseInt(match[1], 10);
+                    }
                 }
             });
 
@@ -968,6 +1052,14 @@
                 html += `<span style="color:#d97d7d">未選択</span>`;
             }
             html += `<button class="edit-button" onclick="scrollToElement('lbl_menu')">修正</button></div>`;
+
+            // オーダーメイド施術
+            const customCare = getCustomCareList();
+            if (customCare.length > 0) {
+                html += `<div class="info-row"><div class="info-label">【オーダーメイド希望施術】</div>`;
+                html += customCare.join('・');
+                html += `<button class="edit-button" onclick="scrollToElement('custom-care')">修正</button></div>`;
+            }
 
             // 希望日時
             html += `<div class="info-row"><div class="info-label">【希望日時】</div>`;
@@ -1016,6 +1108,9 @@
                 menuText += `・${btn.textContent}\n`;
             });
 
+            const customCare = getCustomCareList();
+            const customCareText = customCare.length > 0 ? `[オーダーメイド希望施術]\n${customCare.join('・')}\n\n` : "";
+
             const d1 = d1_day ? `${d1_day} ${d1_time}` : "指定なし";
             const d2 = document.getElementById('date2_day').value ? `${document.getElementById('date2_day').value} ${document.getElementById('date2_time').value}` : "なし";
             const d3 = document.getElementById('date3_day').value ? `${document.getElementById('date3_day').value} ${document.getElementById('date3_time').value}` : "なし";
@@ -1025,6 +1120,7 @@
                 + `[電話番号]\n${phone}\n\n`
                 + `[来店回数]\n${visitStatus}\n\n`
                 + `[希望メニュー]\n${menuText}\n`
+                + customCareText
                 + `[希望日時]\n第一：${d1}\n第二：${d2}\n第三：${d3}\n\n`
                 + `[メッセージ]\n${message}`;
 
